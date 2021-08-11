@@ -40,19 +40,19 @@ void configurePins() {
 }
 
 void idlePins() {
-    P1DIR = 0xFF;    P1REN = 0;    P1OUT = 0;
-    P2DIR = 0xFF;    P2REN = 0;    P2OUT = 0;
+    P1DIR = 0xFF;    P1REN = 0;    //P1OUT = 0;
+    P2DIR = 0xFF;    P2REN = 0;    //P2OUT = 0;
 #ifdef __MSP430_HAS_PORT3_R__
-    P3DIR = 0xFF;    P3REN = 0;    P3OUT = 0;
+    P3DIR = 0xFF;    P3REN = 0;    //P3OUT = 0;
 #endif
 }
 
 uint8_t readPins() {
   sleep_1_9ms(2); // wait ~ 2ms
   uint8_t result = 0;
-  if (!(P1IN & IN_SW1_PIN)) result |= 0b00000010;
-  if (!(P1IN & IN_SW2_PIN)) result |= 0b00000100;
-  if (!(P1IN & IN_SW3_PIN)) result |= 0b00001000;
+  if (P1IN & IN_SW1_PIN) result |= 0b00000001;
+  if (P1IN & IN_SW2_PIN) result |= 0b00000010;
+  if (P1IN & IN_SW3_PIN) result |= 0b00000100;
   return result;
 }
 
@@ -69,16 +69,19 @@ int main(void) {
 
   idlePins();
 
+  sleep_250ms(8);           //wait 2 seconds after first init or reset
+
   while(1) {
     cycleCount--;
     configurePins();
-    contactState = readPins();
+    contactState  = 0;
+    contactState |= readPins();
 
     if ((contactState != lastContactState) || (cycleCount == 0)) {
       lastContactState = contactState;
       if (cycleCount == 0) contactState |= 0b10000000;
 
-      if (!(isAVRAwake())) wakeupAVR();
+      wakeupAVR();
 
       cycleCount          = CYCLE_TIME;
       bool lastStrobe     = false;
