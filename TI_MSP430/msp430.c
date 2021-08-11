@@ -1,3 +1,5 @@
+// 2021-08-11 jp112sdl Creative Commons - CC-BY-NC-SA http://creativecommons.org/licenses/by-nc-sa/4.0/de/
+
 #include <msp430.h>
 #include <stdint.h>
 #include <stdbool.h>
