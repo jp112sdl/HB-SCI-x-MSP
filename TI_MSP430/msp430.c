@@ -42,10 +42,10 @@ void configurePins() {
 }
 
 void idlePins() {
-    P1DIR = 0xFF;    P1REN = 0;    //P1OUT = 0;
-    P2DIR = 0xFF;    P2REN = 0;    //P2OUT = 0;
+    P1DIR = 0xFF;    /*P1REN = 0;*/    P1OUT = 0;
+    P2DIR = 0xFF;    /*P2REN = 0;*/    P2OUT = 0;
 #ifdef __MSP430_HAS_PORT3_R__
-    P3DIR = 0xFF;    P3REN = 0;    //P3OUT = 0;
+    P3DIR = 0xFF;    /*P3REN = 0;*/    P3OUT = 0;
 #endif
 }
 
@@ -107,7 +107,7 @@ int main(void) {
 
     } else {
       idlePins();
-      sleep_250ms(1);
+      sleep_250ms(2);
     }
   }
 
