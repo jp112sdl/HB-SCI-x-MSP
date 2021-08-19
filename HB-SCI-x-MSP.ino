@@ -39,7 +39,7 @@ using namespace as;
 
 #define NUM_CHANNELS       3
 #define PEERS_PER_CHANNEL 10
-#define POWEROFF_DELAY_MILLIS 2000
+#define POWEROFF_DELAY_MILLIS 3500
 
 const struct DeviceInfo PROGMEM devinfo = {
   {0x00, 0x5F, 0x01},     // Device ID
