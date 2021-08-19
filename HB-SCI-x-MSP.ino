@@ -125,8 +125,9 @@ class PowerOffAlarm : public Alarm {
     }
 
     void powerOff() {
-      hal.led.ledOn();
+      hal.led.ledOff();
       hal.radio.setIdle();
+      //DPRINTLN("DEEPSLEEP");_delay_ms(200);
       LowPower.powerDown(SLEEP_FOREVER, ADC_OFF, BOD_OFF);
     }
 
