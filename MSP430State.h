@@ -172,6 +172,8 @@ class StateDevice : public MultiChannelDevice<HalType, ChannelType, ChannelCount
       if ( (mspState & 0b10000000) && cycleEnabled) {
         DPRINTLN("send cyclic");
         this->channel(1).changed(true);
+        this->channel(2).changed(true);
+        this->channel(3).changed(true);
       }
 
       canInterrupt = true;
