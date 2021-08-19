@@ -208,7 +208,7 @@ L Device:LED_Dual_ACA D1
 U 1 1 61126B53
 P 4480 1820
 F 0 "D1" H 4480 1473 50  0000 C CNN
-F 1 "Config/Status LED" H 4480 1564 50  0000 C CNN
+F 1 "LED" H 4480 1564 50  0000 C CNN
 F 2 "LED_THT:LED_D3.0mm-3" H 4480 1820 50  0001 C CNN
 F 3 "~" H 4480 1820 50  0001 C CNN
 	1    4480 1820
@@ -593,7 +593,7 @@ P 1060 3030
 F 0 "BT1" H 1178 3126 50  0000 L CNN
 F 1 "Battery_Cell" H 1178 3035 50  0000 L CNN
 F 2 "Battery:BatteryHolder_Keystone_1060_1x2032" V 1060 3090 50  0001 C CNN
-F 3 "~" V 1060 3090 50  0001 C CNN
+F 3 "https://www.reichelt.de/knopfzellenclip-fuer-20-mm-smd-kzh-20smd-2-p74686.html" V 1060 3090 50  0001 C CNN
 	1    1060 3030
 	1    0    0    -1  
 $EndComp
