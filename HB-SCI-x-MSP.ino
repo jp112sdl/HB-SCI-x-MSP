@@ -56,9 +56,9 @@ typedef DualStatusLed<LED_PIN, LED_PIN2> LedType;
 typedef AskSin<LedType, IrqInternalBatt, RadioType> Hal;
 
 DEFREGISTER(Reg0, DREG_CYCLICINFOMSG, MASTERID_REGS, DREG_TRANSMITTRYMAX)
-class RHSList0 : public RegList0<Reg0> {
+class SCList0 : public RegList0<Reg0> {
   public:
-    RHSList0(uint16_t addr) : RegList0<Reg0>(addr) {}
+    SCList0(uint16_t addr) : RegList0<Reg0>(addr) {}
     void defaults () {
       clear();
       cycleInfoMsg(true);
@@ -67,9 +67,9 @@ class RHSList0 : public RegList0<Reg0> {
 };
 
 DEFREGISTER(Reg1, CREG_AES_ACTIVE, CREG_MSGFORPOS, CREG_EVENTDELAYTIME, CREG_TRANSMITTRYMAX)
-class RHSList1 : public RegList1<Reg1> {
+class SCList1 : public RegList1<Reg1> {
   public:
-    RHSList1 (uint16_t addr) : RegList1<Reg1>(addr) {}
+    SCList1 (uint16_t addr) : RegList1<Reg1>(addr) {}
     void defaults () {
       clear();
       msgForPosA(1); // CLOSED
@@ -80,12 +80,12 @@ class RHSList1 : public RegList1<Reg1> {
     }
 };
 
-typedef MSPStateChannel<Hal, RHSList0, RHSList1, DefList4, PEERS_PER_CHANNEL> ChannelType;
-typedef StateDevice<Hal, ChannelType, NUM_CHANNELS, RHSList0> RHSType;
+typedef MSPStateChannel<Hal, SCList0, SCList1, DefList4, PEERS_PER_CHANNEL> ChannelType;
+typedef StateDevice<Hal, ChannelType, NUM_CHANNELS, SCList0> SCType;
 
 Hal hal;
-RHSType sdev(devinfo, 0x20);
-ConfigButton<RHSType> cfgBtn(sdev);
+SCType sdev(devinfo, 0x20);
+ConfigButton<SCType> cfgBtn(sdev);
 
 void setup () {
   DINIT(57600, ASKSIN_PLUS_PLUS_IDENTIFIER);
