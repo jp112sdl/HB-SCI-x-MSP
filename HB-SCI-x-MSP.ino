@@ -20,22 +20,22 @@
 #include <Register.h>
 #include <Button.h>
 
-#define I_WAKEUP A1
-#define I_DATA   A0
-#define O_AWAKE  6
-#define O_CLK    5
-#define O_RST    A2
+#define I_WAKEUP A4
+#define I_DATA   A3
+#define O_AWAKE  A2
+#define O_CLK    A1
+#define O_RST    A5
 
 #include "MSP430State.h"
 
 using namespace as;
 
 
-#define LED_PIN           4
+#define LED_PIN           8
 #define LED_PIN2          9
-#define CONFIG_BUTTON_PIN 8
+#define CONFIG_BUTTON_PIN A0
 
-#define CC1101_PWR        7
+#define CC1101_PWR        5
 
 #define NUM_CHANNELS       3
 #define PEERS_PER_CHANNEL 10
