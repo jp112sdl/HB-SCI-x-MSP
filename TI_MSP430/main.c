@@ -7,16 +7,17 @@
 /* AVR */
 //OUTPUTS
 #define OUT_AVR_WAKE_PIN     BIT0
-#define OUT_AVR_DATA         BIT4
+#define OUT_AVR_DATA         BIT1
 
 //INTPUTS
-#define IN_AVR_IS_AWAKE_PIN  BIT5
-#define IN_AVR_CLK_PIN       BIT1
+#define IN_AVR_IS_AWAKE_PIN  BIT2
+#define IN_AVR_CLK_PIN       BIT3
 
 /*MSP local*/
-#define IN_SW1_PIN           BIT3
-#define IN_SW2_PIN           BIT6
-#define IN_SW3_PIN           BIT7
+#define IN_SW1_PIN           BIT4
+#define IN_SW2_PIN           BIT5
+#define IN_SW3_PIN           BIT6
+#define IN_SW4_PIN           BIT7
 
 #define CYCLE_TIME           86400 * 4UL // every 24 hours (seconds * 4 -> 250ms tick interval)
 
