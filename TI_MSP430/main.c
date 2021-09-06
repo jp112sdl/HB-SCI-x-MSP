@@ -20,6 +20,7 @@
 #define IN_SW4_PIN           BIT7
 
 #define CYCLE_TIME           86400 * 4UL // every 24 hours (seconds * 4 -> 250ms tick interval)
+//#define CYCLE_TIME           60 * 4UL  // for debug
 
 uint32_t cycleCount      = CYCLE_TIME;
 uint8_t  contactState    = 0;
@@ -38,8 +39,9 @@ void configurePins() {
     P1DIR &= ~IN_SW1_PIN;
     P1DIR &= ~IN_SW2_PIN;
     P1DIR &= ~IN_SW3_PIN;
-    P1REN |= IN_SW1_PIN | IN_SW2_PIN | IN_SW3_PIN;
-    P1OUT |= IN_SW1_PIN | IN_SW2_PIN | IN_SW3_PIN;
+    P1DIR &= ~IN_SW4_PIN;
+    P1REN |= IN_SW1_PIN | IN_SW2_PIN | IN_SW3_PIN | IN_SW4_PIN;
+    P1OUT |= IN_SW1_PIN | IN_SW2_PIN | IN_SW3_PIN | IN_SW4_PIN;
 }
 
 void idlePins() {
@@ -56,6 +58,7 @@ uint8_t readPins() {
   if (P1IN & IN_SW1_PIN) result |= 0b00000001;
   if (P1IN & IN_SW2_PIN) result |= 0b00000010;
   if (P1IN & IN_SW3_PIN) result |= 0b00000100;
+  if (P1IN & IN_SW4_PIN) result |= 0b00001000;
   return result;
 }
 
@@ -67,6 +70,7 @@ void wakeupAVR() {
 
 int main(void) {
   BCSCTL1 |= DIVA_0;        // ACLK/1
+  //BCSCTL3 |= XCAP_2;        // 9pF load capacitor
   WDTCTL   = WDT_ADLY_250;  // WDT 250ms interval timer
   IE1     |= WDTIE;         // Enable WDT interrupt
 

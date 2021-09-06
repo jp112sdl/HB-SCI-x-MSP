@@ -9,7 +9,7 @@
 
 #include <MultiChannelDevice.h>
 
-enum State { NoPos = 0, PosA, PosB, PosC };
+enum State { NoPos = 0, PosA, PosB };
 
 #define STROBE_DLY  1500
 #define READ_COUNT  8
@@ -24,7 +24,7 @@ class MSPStateChannel : public Channel<HALTYPE, List1Type, EmptyList, List4Type,
         MSPStateChannel& channel;
         uint8_t count, state;
 
-        EventSender (MSPStateChannel& c) : Alarm(0), channel(c), count(0), state(0) {}
+        EventSender (MSPStateChannel& c) : Alarm(0), channel(c), count(0), state(0xff) {}
         virtual ~EventSender () {}
         virtual void trigger (__attribute__ ((unused)) AlarmClock& clock) {
           SensorEventMsg& msg = (SensorEventMsg&)channel.device().message();
@@ -165,15 +165,19 @@ class StateDevice : public MultiChannelDevice<HalType, ChannelType, ChannelCount
 
       DPRINT("OUT: ");DHEXLN(mspState);
 
-      this->channel(1).sendState(mspState & 0b00000001 ? State::PosB : State::PosA);
-      this->channel(2).sendState(mspState & 0b00000010 ? State::PosB : State::PosA);
-      this->channel(3).sendState(mspState & 0b00000100 ? State::PosB : State::PosA);
+      for (uint8_t i = 0 ; i< NUM_CHANNELS;i++) {
+        this->channel(i+1).sendState(mspState & 1 << i ? State::PosB : State::PosA);
+      }
+      //this->channel(1).sendState(mspState & 0b00000001 ? State::PosB : State::PosA);
+      //this->channel(2).sendState(mspState & 0b00000010 ? State::PosB : State::PosA);
+      //this->channel(3).sendState(mspState & 0b00000100 ? State::PosB : State::PosA);
+      //this->channel(4).sendState(mspState & 0b00001000 ? State::PosB : State::PosA);
 
       if ( (mspState & 0b10000000) && cycleEnabled) {
         DPRINTLN("send cyclic");
-        this->channel(1).changed(true);
-        this->channel(2).changed(true);
-        this->channel(3).changed(true);
+        for (uint8_t i = 0 ; i< NUM_CHANNELS;i++) {
+          this->channel(i+1).changed(true);
+        }
       }
 
       canInterrupt = true;
@@ -192,7 +196,6 @@ class StateDevice : public MultiChannelDevice<HalType, ChannelType, ChannelCount
   }; \
     dev.initPins(); \
     enableInterrupt(pin,__##pin##ISRHandler::isr,RISING);
-
 }
 
 #endif

@@ -26,6 +26,8 @@
 #define O_CLK    A1
 #define O_RST    A5
 
+#define NUM_CHANNELS       4
+
 #include "MSP430State.h"
 
 using namespace as;
@@ -37,7 +39,6 @@ using namespace as;
 
 #define CC1101_PWR        5
 
-#define NUM_CHANNELS       3
 #define PEERS_PER_CHANNEL 10
 #define POWEROFF_DELAY_MILLIS 3500
 
