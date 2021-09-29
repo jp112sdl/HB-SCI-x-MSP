@@ -128,7 +128,6 @@ class StateDevice : public MultiChannelDevice<HalType, ChannelType, ChannelCount
     void irq() {
       sysclock.cancel(ca);
       if (canInterrupt) {
-        digitalWrite(O_AWAKE, HIGH);
         sysclock.add(ca);
       }
     }
@@ -151,36 +150,32 @@ class StateDevice : public MultiChannelDevice<HalType, ChannelType, ChannelCount
 
     void check() {
       if (canInterrupt == true) {
-      canInterrupt = false;
-      uint8_t mspState = 0;
+        digitalWrite(O_AWAKE, HIGH);
+        _delay_ms(2);
+        canInterrupt = false;
+        uint8_t mspState = 0;
 
-      for (uint8_t i = 0; i < READ_COUNT; i++) {
-        while (digitalRead(I_WAKEUP) == HIGH);
-        if (mspRead()) bitSet(mspState, i);
-      }
-
-      digitalWrite(O_AWAKE, LOW);
-
-      delay(20);
-
-      DPRINT("OUT: ");DHEXLN(mspState);
-
-      for (uint8_t i = 0 ; i< NUM_CHANNELS;i++) {
-        this->channel(i+1).sendState(mspState & 1 << i ? State::PosB : State::PosA);
-      }
-      //this->channel(1).sendState(mspState & 0b00000001 ? State::PosB : State::PosA);
-      //this->channel(2).sendState(mspState & 0b00000010 ? State::PosB : State::PosA);
-      //this->channel(3).sendState(mspState & 0b00000100 ? State::PosB : State::PosA);
-      //this->channel(4).sendState(mspState & 0b00001000 ? State::PosB : State::PosA);
-
-      if ( (mspState & 0b10000000) && cycleEnabled) {
-        DPRINTLN("send cyclic");
-        for (uint8_t i = 0 ; i< NUM_CHANNELS;i++) {
-          this->channel(i+1).changed(true);
+        for (uint8_t i = 0; i < READ_COUNT; i++) {
+          while (digitalRead(I_WAKEUP) == HIGH);
+          if (mspRead()) bitSet(mspState, i);
         }
-      }
 
-      canInterrupt = true;
+        digitalWrite(O_AWAKE, LOW);
+
+        delay(20);
+
+        for (uint8_t i = 0 ; i< NUM_CHANNELS;i++) {
+          this->channel(i+1).sendState(mspState & 1 << i ? State::PosB : State::PosA);
+        }
+
+        if ( (mspState & 0b10000000) && cycleEnabled) {
+          DPRINTLN("send cyclic");
+          for (uint8_t i = 0 ; i< NUM_CHANNELS;i++) {
+            this->channel(i+1).changed(true);
+          }
+        }
+
+        canInterrupt = true;
       }
     }
 
