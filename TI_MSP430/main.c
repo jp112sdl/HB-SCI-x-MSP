@@ -88,12 +88,18 @@ int main(void) {
       lastContactState = contactState;
       if (cycleCount == 0) contactState |= 0b10000000;
 
-      wakeupAVR();
-
       cycleCount          = CYCLE_TIME;
       bool lastStrobe     = false;
       uint8_t  clk_count  = 8;
-      uint16_t exit_count = 1000;  //prevent endless loop if AVR does not respond
+      uint16_t exit_count = 5;  //prevent endless loop if AVR does not respond
+
+      while (!isAVRAwake() && exit_count > 0) {
+        sleep_1_9ms(2);
+        wakeupAVR();
+        exit_count--;
+      }
+
+      exit_count = 1000;
       while (isAVRAwake() && exit_count > 0 && clk_count > 0) {
         exit_count--;
         bool strobe = AVRClockStrobe();
