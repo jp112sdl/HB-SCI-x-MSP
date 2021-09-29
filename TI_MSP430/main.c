@@ -42,6 +42,10 @@ void configurePins() {
     P1DIR &= ~IN_SW4_PIN;
     P1REN |= IN_SW1_PIN | IN_SW2_PIN | IN_SW3_PIN | IN_SW4_PIN;
     P1OUT |= IN_SW1_PIN | IN_SW2_PIN | IN_SW3_PIN | IN_SW4_PIN;
+
+    P1IE  |=  IN_AVR_IS_AWAKE_PIN;
+    P1IES &= ~IN_AVR_IS_AWAKE_PIN;
+    P1IFG &= ~IN_AVR_IS_AWAKE_PIN;
 }
 
 void idlePins() {
@@ -125,4 +129,10 @@ int main(void) {
 }
 
 #pragma vector=WDT_VECTOR
-__interrupt void watchdog_timer (void) { __bic_SR_register_on_exit(LPM3_bits); }
+__interrupt void watchdog_timer (void) { __bic_SR_register_on_exit(LPM3_bits + GIE); }
+
+#pragma vector=PORT1_VECTOR
+__interrupt void Port_1(void){
+  P1IFG &= ~IN_AVR_IS_AWAKE_PIN;
+  lastContactState = 0xAA;
+}
