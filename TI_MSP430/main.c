@@ -4,23 +4,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-/* AVR */
-//OUTPUTS
-#define OUT_AVR_WAKE_PIN     BIT0
-#define OUT_AVR_DATA         BIT1
-
-//INTPUTS
-#define IN_AVR_IS_AWAKE_PIN  BIT2
-#define IN_AVR_CLK_PIN       BIT3
-
-/*MSP local*/
-#define IN_SW1_PIN           BIT4
-#define IN_SW2_PIN           BIT5
-#define IN_SW3_PIN           BIT6
-#define IN_SW4_PIN           BIT7
+#define OUT_AVR_WAKE_PIN     BIT0  //output, wake up the AVR
+#define OUT_AVR_DATA         BIT1  //output, send data to the AVR
+#define IN_AVR_IS_AWAKE_PIN  BIT2  //input, to check, if the AVR is not sleeping
+#define IN_AVR_CLK_PIN       BIT3  //input, the clock for bitwise data sending on OUT_AVR_DATA pin
+#define IN_SW1_PIN           BIT4  //input, contact to monitor
+#define IN_SW2_PIN           BIT5  //input, contact to monitor
+#define IN_SW3_PIN           BIT6  //input, contact to monitor
+#define IN_SW4_PIN           BIT7  //input, contact to monitor
 
 #define CYCLE_TIME           86400 * 4UL // every 24 hours (seconds * 4 -> 250ms tick interval)
-//#define CYCLE_TIME           60 * 4UL  // for debug
 
 uint32_t cycleCount      = CYCLE_TIME;
 uint8_t  contactState    = 0;
