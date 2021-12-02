@@ -10,9 +10,13 @@
 
 #define SIMPLE_CC1101_INIT
 #define NO_RTC
-#define HIDE_IGNORE_MSG
 #define NO_CRC
+#define NDEBUG
+#define SENSOR_ONLY
 
+#define EI_ATTINY24
+#define EI_NOTPORTA
+#define EI_NOTPORTB
 #define EI_NOTEXTERNAL
 #include <EnableInterrupt.h>
 #include <LowPower.h>
